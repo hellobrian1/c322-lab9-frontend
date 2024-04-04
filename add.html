@@ -23,6 +23,7 @@
       <input type="file" id="imageInput" />
       <button onclick="addTheDuck()">Add the duck</button>
     </div>
+    <script src="configuration.js"></script>
     <script>
       let host = "http://localhost:8080";
           async function addTheDuck() {
@@ -42,7 +43,8 @@
                 let request = {
                   method: "POST",
                   headers: {
-                      "Content-Type": "application/json"
+                      "Content-Type": "application/json",
+                      'Authorization': 'Bearer ${configuration.token}'
                   },
                   body: JSON.stringify(duck)
                 };
@@ -74,6 +76,9 @@
                 let result = await response.json();
                 return result;
 
+          }
+          async function logout() {
+            removeTheToken();
           }
     </script>
   </body>

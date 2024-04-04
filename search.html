@@ -27,20 +27,28 @@
       </thead>
       <tbody id="result"></tbody>
     </table>
+    <script src="configuration.js"></script>
 
     <script>
       let ducks = [];
 
       async function getAll() {
-        let host = "http://localhost:8080";
-        return fetch(host + "/ducks")
-          .then((response) => response.json())
-          .catch((error) => {
+    let host = configuration.host();
+    const headers = { 'Authorization': 'Bearer ' + configuration.token() };
+    return fetch(host + "/ducks", { headers })
+        .then((response) => {
+            if(response.status === 401) {
+                logout();
+            }
+            return response.json();
+        })
+        .catch((error) => {
             console.log(error);
             alert("Something went wrong!");
             return [];
-          });
-      }
+        });
+}
+
 
       async function search() {
         if (ducks.length == 0) {
